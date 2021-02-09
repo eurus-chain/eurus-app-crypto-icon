@@ -6,12 +6,14 @@ class _CryptoIconLoader extends StatefulWidget {
     @required this.size,
     @required this.symbol,
     this.source,
+    this.imgUrl,
     this.placeholder,
   });
 
   final double size;
   final String symbol;
   final IconSourceType source;
+  final String imgUrl;
   // Widget to be display if icon is not found
   final Widget placeholder;
 
@@ -34,6 +36,8 @@ class _CryptoIconLoaderState extends State<_CryptoIconLoader> {
         return _getSvgIcon();
       case IconSourceType.png:
         return _getPngIcon();
+      case IconSourceType.url:
+        return _getUrlIcon();
       default:
         return widget.placeholder;
     }
@@ -53,6 +57,17 @@ class _CryptoIconLoaderState extends State<_CryptoIconLoader> {
     return Image.asset(
       'assets/${widget.symbol.toLowerCase()}.png',
       package: 'app_crypto_icons',
+      errorBuilder: (_, o, s) {
+        return widget.placeholder;
+      },
+    );
+  }
+
+  Widget _getUrlIcon() {
+    if (widget.imgUrl == null) return widget.placeholder;
+
+    return Image.network(
+      widget.imgUrl,
       errorBuilder: (_, o, s) {
         return widget.placeholder;
       },

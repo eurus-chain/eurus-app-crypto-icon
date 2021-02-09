@@ -12,8 +12,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  List<CIcon> _cryptoIcons = [];
+
   @override
   void initState() {
+    _initIcons();
+
     super.initState();
   }
 
@@ -32,37 +36,9 @@ class _MyAppState extends State<MyApp> {
                 children: [
                   Wrap(
                     spacing: 2,
-                    children: [
-                      _iconName('usdt'),
-                      _iconName('link'),
-                      _iconName('busd'),
-                      _iconName('usdc'),
-                      _iconName('yfi'),
-                      _iconName('dai'),
-                      _iconName('omg'),
-                      _iconName('uni'),
-                      _iconName('ven'),
-                      _iconName('aave'),
-                      _iconName('ht'),
-                      _iconName('sushi'),
-                      _iconName('tusd'),
-                      _iconName('cdai'),
-                      _iconName('sxp'),
-                      _iconName('bat'),
-                      _iconName('usdk'),
-                      _iconName('wbtc'),
-                      _iconName('zil'),
-                      _iconName('snx'),
-                      _iconName('okb'),
-                      _iconName('band'),
-                      _iconName('mkr'),
-                      _iconName('husd'),
-                      _iconName('zrx'),
-                      _iconName('pax'),
-                      _iconName('comp'),
-                      _iconName('rsr'),
-                      _iconName('bal'),
-                    ],
+                    children: _cryptoIcons
+                        .map((e) => _iconName(e.symbol, source: e.source))
+                        .toList(),
                   )
                 ],
               ),
@@ -73,14 +49,71 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
+  void _initIcons() async {
+    List<String> cList = [
+      'usdt',
+      'link',
+      'busd',
+      'usdc',
+      'yfi',
+      'dai',
+      'omg',
+      'uni',
+      'ven',
+      'aave',
+      'ht',
+      'sushi',
+      'tusd',
+      'cdai',
+      'sxp',
+      'bat',
+      'usdk',
+      'wbtc',
+      'zil',
+      'snx',
+      'okb',
+      'band',
+      'mkr',
+      'husd',
+      'zrx',
+      'pax',
+      'comp',
+      'rsr',
+      'bal'
+    ];
+
+    List<CIcon> dummyList = [];
+
+    for (var c in cList) {
+      dummyList.add(
+        CIcon(symbol: c, source: await AppCryptoIcons.ckIconSource(c)),
+      );
+    }
+
+    setState(() {
+      _cryptoIcons = dummyList;
+    });
+  }
+
   /// Display icon with name underneath
-  Widget _iconName(String symbol, {Widget placeholder}) {
+  Widget _iconName(String symbol, {Widget placeholder, IconSourceType source}) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        AppCryptoIcons.getIcon(symbol, 100, placeholder: placeholder),
+        AppCryptoIcons.getIcon(symbol, 100,
+            placeholder: placeholder, source: source),
         Text(symbol),
       ],
     );
   }
+}
+
+class CIcon {
+  CIcon({
+    @required this.symbol,
+    @required this.source,
+  });
+
+  final String symbol;
+  final IconSourceType source;
 }

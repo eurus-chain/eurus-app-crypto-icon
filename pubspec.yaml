@@ -1,6 +1,6 @@
 name: app_crypto_icons
 description: Flutter Plugin for application to display 30 of the Crypto Currency Icons
-version: 0.0.1
+version: 0.0.2
 homepage: https://www.goldhub.hk
 
 environment:
