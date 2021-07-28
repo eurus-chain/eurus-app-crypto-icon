@@ -3,9 +3,9 @@ part of 'app_crypto_icons.dart';
 /// Crypto Icon Loader
 class _CryptoIconLoader extends StatefulWidget {
   _CryptoIconLoader({
-    @required this.size,
-    @required this.symbol,
-    this.source,
+    required this.size,
+    required this.symbol,
+    required this.source,
     this.imgUrl,
     this.placeholder,
   });
@@ -13,9 +13,9 @@ class _CryptoIconLoader extends StatefulWidget {
   final double size;
   final String symbol;
   final IconSourceType source;
-  final String imgUrl;
+  final String? imgUrl;
   // Widget to be display if icon is not found
-  final Widget placeholder;
+  final Widget? placeholder;
 
   _CryptoIconLoaderState createState() => _CryptoIconLoaderState();
 }
@@ -30,7 +30,7 @@ class _CryptoIconLoaderState extends State<_CryptoIconLoader> {
     );
   }
 
-  Widget _iconSourceSwitch() {
+  Widget? _iconSourceSwitch() {
     switch (widget.source) {
       case IconSourceType.svg:
         return _getSvgIcon();
@@ -47,9 +47,11 @@ class _CryptoIconLoaderState extends State<_CryptoIconLoader> {
     return SvgPicture.asset(
       'assets/${widget.symbol.toLowerCase()}.svg',
       package: 'app_crypto_icons',
-      placeholderBuilder: (BuildContext _) {
-        return widget.placeholder;
-      },
+      placeholderBuilder: widget.placeholder != null
+          ? (BuildContext _) {
+              return widget.placeholder!;
+            }
+          : null,
     );
   }
 
@@ -57,20 +59,24 @@ class _CryptoIconLoaderState extends State<_CryptoIconLoader> {
     return Image.asset(
       'assets/${widget.symbol.toLowerCase()}.png',
       package: 'app_crypto_icons',
-      errorBuilder: (_, o, s) {
-        return widget.placeholder;
-      },
+      errorBuilder: widget.placeholder == null
+          ? (_, o, s) {
+              return widget.placeholder!;
+            }
+          : null,
     );
   }
 
-  Widget _getUrlIcon() {
+  Widget? _getUrlIcon() {
     if (widget.imgUrl == null) return widget.placeholder;
 
     return Image.network(
-      widget.imgUrl,
-      errorBuilder: (_, o, s) {
-        return widget.placeholder;
-      },
+      widget.imgUrl!,
+      errorBuilder: widget.placeholder != null
+          ? (_, o, s) {
+              return widget.placeholder!;
+            }
+          : null,
     );
   }
 }

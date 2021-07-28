@@ -10,7 +10,7 @@ class AppCryptoIcons {
   /// return [IconSourceType] which indicates which type of icon do we have
   static Future<IconSourceType> ckIconSource(
     String symbol, {
-    String imgUrl,
+    String? imgUrl,
   }) async {
     /// Check with imgUrl
     if (imgUrl != null) return IconSourceType.url;
@@ -18,7 +18,8 @@ class AppCryptoIcons {
     String path = 'packages/app_crypto_icons/assets/${symbol.toLowerCase()}';
 
     /// Check svg version of the icon exists
-    IconSourceType source = await rootBundle.load('$path.svg').then((v) {
+    IconSourceType? source =
+        await rootBundle.load('$path.svg').then<IconSourceType?>((v) {
       return IconSourceType.svg;
     }).catchError((e) {
       return null;
@@ -26,7 +27,7 @@ class AppCryptoIcons {
     if (source != null) return source;
 
     /// Check png version of the icon exists
-    source = await rootBundle.load('$path.png').then((v) {
+    source = await rootBundle.load('$path.png').then<IconSourceType?>((v) {
       return IconSourceType.png;
     }).catchError((e) {
       return null;
@@ -40,9 +41,9 @@ class AppCryptoIcons {
   static Widget getIcon(
     String symbol,
     double size, {
-    @required IconSourceType source,
-    String imgUrl,
-    Widget placeholder,
+    required IconSourceType source,
+    String? imgUrl,
+    Widget? placeholder,
   }) {
     placeholder =
         placeholder ?? Icon(Icons.monetization_on_outlined, size: size);

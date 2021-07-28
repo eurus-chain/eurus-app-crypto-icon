@@ -96,7 +96,8 @@ class _MyAppState extends State<MyApp> {
   }
 
   /// Display icon with name underneath
-  Widget _iconName(String symbol, {Widget placeholder, IconSourceType source}) {
+  Widget _iconName(String symbol,
+      {Widget? placeholder, required IconSourceType source}) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -110,8 +111,8 @@ class _MyAppState extends State<MyApp> {
 
 class CIcon {
   CIcon({
-    @required this.symbol,
-    @required this.source,
+    required this.symbol,
+    required this.source,
   });
 
   final String symbol;
